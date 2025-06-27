@@ -25,6 +25,7 @@ const createAdmin = async (data: any) => {
   });
 
   return result;
+  console.log("get data");
 };
 
 export const userService = {
