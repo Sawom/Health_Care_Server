@@ -25,7 +25,7 @@ model User {
 }
 
 model Admin {
-  id            String   @id @default(uuid())
+  id            String   @id @default(uuid()) // for using uuid we get id automatically and unique
   name          String
   email         String   @unique
   profilePhoto  String?
