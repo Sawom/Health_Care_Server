@@ -1,6 +1,7 @@
 // here we put all middleware
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
+import { AdminRoutes } from "./app/modules/Admin/admin.routes";
 import { userRoutes } from "./app/modules/User/user.routes";
 
 const app: Application = express();
@@ -18,6 +19,6 @@ app.get("/", (req: Request, res: Response) => {
 
 // module routes
 app.use("/api/v1/user", userRoutes);
-// app.use('api/v1/admin', Admin)
+app.use("api/v1/admin", AdminRoutes);
 
 export default app;
