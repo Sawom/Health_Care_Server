@@ -16,5 +16,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+// module routes
 app.use("/api/v1/user", userRoutes);
+// app.use('api/v1/admin', Admin)
+
 export default app;
