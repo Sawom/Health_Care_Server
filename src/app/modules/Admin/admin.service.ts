@@ -6,11 +6,11 @@ import { adminSearchAbleFields } from "./admin.constant";
 const getAllFromDB = async (params: any, options: any) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
-  const andCondions: Prisma.AdminWhereInput[] = [];
+  const andConditions: Prisma.AdminWhereInput[] = [];
 
   // we store adminSearchAbleFields in an array for searching data
   if (params.searchTerm) {
-    andCondions.push({
+    andConditions.push({
       OR: adminSearchAbleFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
@@ -21,7 +21,7 @@ const getAllFromDB = async (params: any, options: any) => {
   }
 
   if (Object.keys(filterData).length > 0) {
-    andCondions.push({
+    andConditions.push({
       // if just one fields match then show data or no other fields are matched then show all data
       AND: Object.keys(filterData).map((key) => ({
         [key]: {
@@ -31,11 +31,11 @@ const getAllFromDB = async (params: any, options: any) => {
     });
   }
 
-  //console.dir(andCondions, { depth: 'inifinity' })
-  const whereConditons: Prisma.AdminWhereInput = { AND: andCondions };
+  //console.dir(andConditions, { depth: 'inifinity' })
+  const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
 
   const result = await prisma.admin.findMany({
-    where: whereConditons,
+    where: whereConditions,
     skip,
     take: limit,
     orderBy:
