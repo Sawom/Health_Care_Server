@@ -6,12 +6,14 @@ import { adminSearchAbleFields } from "./admin.constant";
 const getAllFromDB = async (params: any, options: any) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
+
   const andConditions: Prisma.AdminWhereInput[] = [];
 
-  // we store adminSearchAbleFields in an array for searching data
+  // we store admin Searchable fields in an array for searching data
   if (params.searchTerm) {
     andConditions.push({
       OR: adminSearchAbleFields.map((field) => ({
+        // any fields matches will show the result
         [field]: {
           contains: params.searchTerm,
           mode: "insensitive", // case-insensitive search,
@@ -31,6 +33,10 @@ const getAllFromDB = async (params: any, options: any) => {
     });
   }
 
+  andConditions.push({
+    isDeleted: false,
+  });
+
   //console.dir(andConditions, { depth: 'inifinity' })
   const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
 
@@ -47,7 +53,19 @@ const getAllFromDB = async (params: any, options: any) => {
             createdAt: "desc", // descending order
           },
   });
-  return result;
+
+  const total = await prisma.admin.count({
+    where: whereConditions, // conditions can be changed, so we need count of result as conditions
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
 };
 
 export const AdminService = {
