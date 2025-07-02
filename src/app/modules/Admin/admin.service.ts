@@ -68,7 +68,8 @@ const getAllFromDB = async (params: any, options: any) => {
   };
 };
 
-const getIdFromDB = async (id: string): Promise<Admin | null> => {
+const getByIdFromDB = async (id: string): Promise<Admin | null> => {
+  // we get admin's datatype from prisma
   const result = await prisma.admin.findUnique({
     where: {
       id,
@@ -126,6 +127,8 @@ const deleteFromDB = async (id: string): Promise<Admin | null> => {
   return result;
 };
 
+// soft delete means we did not delete data, we just change the status * isDeleted: true *.
+// so that data is remaining to database but that data is not showing to user
 const softDeleteFromDB = async (id: string): Promise<Admin | null> => {
   await prisma.admin.findUniqueOrThrow({
     where: {
@@ -161,7 +164,7 @@ const softDeleteFromDB = async (id: string): Promise<Admin | null> => {
 
 export const AdminService = {
   getAllFromDB,
-  getIdFromDB,
+  getByIdFromDB,
   updateIntoDB,
   deleteFromDB,
   softDeleteFromDB,
