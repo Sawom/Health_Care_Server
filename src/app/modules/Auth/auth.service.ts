@@ -3,8 +3,8 @@ import * as bcrypt from "bcrypt";
 import { jwtHelpers } from "../../../helpars/jwtHelpers";
 import prisma from "../../../shared/prisma";
 
-// user login with access token, then a refresh token is given from system. 
-// refresh token is assigned for long time and access token is for short time. 
+// user login with access token, then a refresh token is given from system.
+// refresh token is assigned for long time and access token is for short time.
 // after access time is over then refresh token again provide a access token in backend
 const loginUser = async (payload: { email: string; password: string }) => {
   // if user status is active then check the password.
@@ -54,10 +54,36 @@ const loginUser = async (payload: { email: string; password: string }) => {
 };
 
 const refreshToken = async (token: string) => {
+  let decodedData;
+  try {
+    decodedData = jwtHelpers.verifyToken(token, "abcdefghgijklmnop"); // 'abcdefghgijklmnop' this is a secret key. secret key can be anything
+  } catch (err) {
+    throw new Error("You are not authorized!");
+  }
 
-}
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      email: decodedData.email,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  const accessToken = jwtHelpers.generateToken(
+    {
+      email: userData.email,
+      role: userData.role,
+    },
+    "abcdefg",
+    "5m"
+  );
+
+  return {
+    accessToken,
+    needPasswordChange: userData.needPasswordChange,
+  };
+};
 
 export const AuthServices = {
-    loginUser,
-    refreshToken
-}
+  loginUser,
+  refreshToken,
+};
