@@ -17,6 +17,10 @@ export default {
   reset_pass_link: process.env.RESET_PASS_LINK,
   emailSender: {
     email: process.env.EMAIL,
-    app_pass: process.env.APP_PASS,
+    app_pass: process.env.APP_PASS, // here I get *APP_PASS* from .env,
+    // when you visit .env file you can see a *APP_PASS* value. That value is come from google account.
+    // to get it, go to your google account profile > Security then search *App password*. then google
+    // ask you to login and after that you should create an app and after enter you get the *app password *
+    // which is saved as *APP_PASS*
   },
 };
