@@ -5,7 +5,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
-import config from "../../config/config";
+import config from "../../config";
 import { jwtHelpers } from "../../helpars/jwtHelpers";
 import ApiError from "../errors/ApiError";
 

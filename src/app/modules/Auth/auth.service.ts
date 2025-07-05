@@ -2,7 +2,7 @@ import { UserStatus } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
-import config from "../../../config/config";
+import config from "../../../config";
 import { jwtHelpers } from "../../../helpars/jwtHelpers";
 import prisma from "../../../shared/prisma";
 import ApiError from "../../errors/ApiError";
@@ -116,7 +116,7 @@ const changePassword = async (user: any, payload: any) => {
     },
     data: {
       password: hashedPassword,
-      needPasswordChange: false,
+      needPasswordChange: false, // if password is changed then status turned into false
     },
   });
 
@@ -138,7 +138,7 @@ const forgotPassword = async (payload: { email: string }) => {
     config.jwt.reset_pass_secret as Secret,
     config.jwt.reset_pass_token_expires_in as string
   );
-  //console.log(resetPassToken)
+  console.log(resetPassToken);
 
   const resetPassLink =
     config.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
