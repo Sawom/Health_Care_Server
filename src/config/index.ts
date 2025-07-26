@@ -23,4 +23,13 @@ export default {
     // ask you to login and after that you should create an app and after enter you get the *app password *
     // which is saved as *APP_PASS*
   },
+  ssl: {
+    storeId: process.env.STORE_ID,
+    storePass: process.env.STORE_PASS,
+    successUrl: process.env.SUCCESS_URL,
+    cancelUrl: process.env.CANCEL_URL,
+    failUrl: process.env.FAIL_URL,
+    sslPaymentApi: process.env.SSL_PAYMENT_API,
+    sslValidationApi: process.env.SSL_VALIDATIOIN_API,
+  },
 };
