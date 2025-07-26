@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+     "seed": "ts-node-dev --respawn --transpile-only prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",
+    "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
@@ -36,7 +38,9 @@
     "http-status": "^2.1.0",
     "import-path": "^1.0.15",
     "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.2.1",
     "nodemailer": "^7.0.4",
+    "sslcommerz-lts": "^1.1.0",
     "uuid": "^11.1.0",
     "zod": "^3.25.71"
   }
