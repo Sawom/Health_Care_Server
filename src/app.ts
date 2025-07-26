@@ -1,10 +1,10 @@
 // here we put all middleware
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import router from "./app/routes";
-import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 app.use(cors());
@@ -20,7 +20,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// module routes
+//*** main module routes ***/
+// http://localhost:5000//api/v1/(others)
 app.use("/api/v1", router);
 
 app.use(globalErrorHandler);

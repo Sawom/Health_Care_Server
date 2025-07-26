@@ -1,9 +1,9 @@
 import { Server } from "http";
 import app from "./app";
 
-const port = 3000;
+const port = 5000;
 
-// I implement exitHandler, uncaughtException, unhandledRejection. if try catch is fail to recognize the error then server will be stopped. 
+// I implement exitHandler, uncaughtException, unhandledRejection. if try catch is fail to recognize the error then server will be stopped.
 // this way we avoid server crashing
 async function main() {
   const server: Server = app.listen(port, () => {
@@ -28,7 +28,6 @@ async function main() {
     console.log(error);
     exitHandler();
   });
-
 }
 
 main();

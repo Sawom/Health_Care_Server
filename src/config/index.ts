@@ -24,12 +24,12 @@ export default {
     // which is saved as *APP_PASS*
   },
   ssl: {
-    storeId: process.env.STORE_ID,
-    storePass: process.env.STORE_PASS,
+    storeId: process.env.STORE_ID, // from email
+    storePass: process.env.STORE_PASS, // from email
     successUrl: process.env.SUCCESS_URL,
     cancelUrl: process.env.CANCEL_URL,
     failUrl: process.env.FAIL_URL,
-    sslPaymentApi: process.env.SSL_PAYMENT_API,
-    sslValidationApi: process.env.SSL_VALIDATIOIN_API,
+    sslPaymentApi: process.env.SSL_PAYMENT_API, // from email
+    sslValidationApi: process.env.SSL_VALIDATIOIN_API, // from email
   },
 };
