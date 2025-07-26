@@ -4,7 +4,7 @@ import { fileUploader } from "../../../helpars/fileUploader";
 import prisma from "../../../shared/prisma";
 import { IFile } from "../../interfaces/file";
 
-const inserIntoDB = async (req: Request) => {
+const insertIntoDB = async (req: Request) => {
   const file = req.file as IFile;
 
   if (file) {
@@ -33,7 +33,7 @@ const deleteFromDB = async (id: string): Promise<Specialties> => {
 };
 
 export const SpecialtiesService = {
-  inserIntoDB,
+  insertIntoDB,
   getAllFromDB,
   deleteFromDB,
 };

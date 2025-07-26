@@ -4,9 +4,9 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { SpecialtiesService } from "./specialties.service";
 
-const inserIntoDB = catchAsync(async (req: Request, res: Response) => {
+const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   console.log(req.body);
-  const result = await SpecialtiesService.inserIntoDB(req);
+  const result = await SpecialtiesService.insertIntoDB(req);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -38,7 +38,7 @@ const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const SpecialtiesController = {
-  inserIntoDB,
+  insertIntoDB,
   getAllFromDB,
   deleteFromDB,
 };
