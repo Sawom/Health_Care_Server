@@ -1,4 +1,4 @@
-// with pick function we use for filtering and searching
+// with pick function I use for filtering and searching
 
 const pick = <T extends Record<string, unknown>, k extends keyof T>(
   obj: T,

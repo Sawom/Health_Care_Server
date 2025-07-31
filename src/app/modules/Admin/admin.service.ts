@@ -3,6 +3,7 @@ import { paginationHelper } from "../../../helpars/paginationHelper";
 import prisma from "../../../shared/prisma";
 import { adminSearchAbleFields } from "./admin.constant";
 
+// implement search, pagination, filter
 const getAllFromDB = async (params: any, options: any) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
@@ -22,6 +23,7 @@ const getAllFromDB = async (params: any, options: any) => {
     });
   }
 
+  // check if object has data
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       // if just one fields match then show data or no other fields are matched then show all data

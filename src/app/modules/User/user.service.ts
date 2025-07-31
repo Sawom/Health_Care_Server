@@ -24,7 +24,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
     req.body.admin.profilePhoto = uploadToCloudinary?.secure_url; //secure_url provides img link and it is Cloudinary's property
   }
-
+  // secure password with bcrypt package
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
   // console.log(hashedPassword);
   const userData = {
