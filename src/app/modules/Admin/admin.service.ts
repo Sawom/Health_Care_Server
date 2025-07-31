@@ -16,7 +16,7 @@ const getAllFromDB = async (params: any, options: any) => {
       OR: adminSearchAbleFields.map((field) => ({
         // any fields matches will show the result
         [field]: {
-          contains: params.searchTerm,
+          contains: params.searchTerm, // adding search condition
           mode: "insensitive", // case-insensitive search,
         },
       })),
