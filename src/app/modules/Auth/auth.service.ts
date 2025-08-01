@@ -18,7 +18,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       email: payload.email,
-      status: UserStatus.ACTIVE,
+      status: UserStatus.ACTIVE, // // only user status *active* can login and get refresh code
     },
   });
 
@@ -70,11 +70,11 @@ const refreshToken = async (token: string) => {
     decodedData = jwtHelpers.verifyToken(
       token,
       config.jwt.refresh_token_secret as Secret
-    ); // 'abcdefghgijklmnop' this is a secret key. secret key can be anything
+    ); // setup in .env file.  'abcdefghgijklmnop' this is a secret key. secret key can be anything
   } catch (err) {
     throw new Error("You are not authorized!");
   }
-
+  // only user status *active* can login and get refresh code
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       email: decodedData.email,
@@ -101,7 +101,7 @@ const changePassword = async (user: any, payload: any) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       email: user.email,
-      status: UserStatus.ACTIVE,
+      status: UserStatus.ACTIVE, // only active status user can change his password
     },
   });
 
@@ -172,8 +172,7 @@ const resetPassword = async (
   token: string,
   payload: { id: string; password: string }
 ) => {
-  console.log({ token, payload });
-
+  // console.log({ token, payload });
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       id: payload.id,

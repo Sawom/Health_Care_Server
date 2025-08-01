@@ -17,7 +17,8 @@
 * global error handler
 
 ** authentication
-
+** login, access token, refresh token, verify token
+** change pass, reset pass
 
 
 

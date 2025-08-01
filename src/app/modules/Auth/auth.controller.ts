@@ -10,7 +10,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   // Set refreshToken as an HTTP-only cookie (not accessible via JS)
   // secure: false → cookie works on both HTTP & HTTPS (set true in production)
   res.cookie("refreshToken", refreshToken, {
-    secure: false,
+    secure: false, // secure: true, in production.
     httpOnly: true,
   });
 
