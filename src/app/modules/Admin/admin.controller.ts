@@ -8,7 +8,7 @@ import { AdminService } from "./admin.service";
 const getAllFromDB = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction // from express
 ) => {
   try {
     // console.log(req.query)
@@ -29,11 +29,7 @@ const getAllFromDB = async (
   }
 };
 
-const getIdFromDB = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const getIdFromDB = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const result = await AdminService.getByIdFromDB(id);

@@ -10,8 +10,11 @@
 * delete
 * soft delete
 
+3. 
 
-
+* validate request middleware
+* global error handler
+* global error handler
 
 
 
