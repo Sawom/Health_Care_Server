@@ -11,6 +11,7 @@ import emailSender from "./emailSender";
 // user login with access token, then a refresh token is given from system.
 // refresh token is assigned for long time and access token is for short time.
 // after access time is over then refresh token again provide a access token in backend
+// ** payload: payload means a data send by user. we just call it as payload. just a name.
 const loginUser = async (payload: { email: string; password: string }) => {
   // if user status is active then check the password.
 
@@ -27,9 +28,14 @@ const loginUser = async (payload: { email: string; password: string }) => {
     userData.password
   );
 
+  // console.log(isCorrectPassword);
+
   if (!isCorrectPassword) {
     throw new Error("Password incorrect!");
   }
+
+  // after checking password system will give a token and,
+  //  by this token user can access different data and access route
 
   //   access token generate
   const accessToken = jwtHelpers.generateToken(

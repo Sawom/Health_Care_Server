@@ -10,13 +10,13 @@
 * delete
 * soft delete
 
-3. 
+3. middleware, authentication
 
 * validate request middleware
 * global error handler
 * global error handler
 
-
+** authentication
 
 
 
