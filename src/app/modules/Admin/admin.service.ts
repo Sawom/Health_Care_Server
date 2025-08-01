@@ -89,7 +89,9 @@ const updateIntoDB = async (
   await prisma.admin.findUniqueOrThrow({
     where: {
       id,
-      isDeleted: false,
+      isDeleted: false, // after soft delete we filter which user's status false.
+      //we update that false status user. *soft delete means we did not delete a data just change a flag from false to true.
+      // we keep the actual data but only change the flag *
     },
   });
 

@@ -14,7 +14,7 @@ import { SpecialtiesRoutes } from "../modules/Specialties/specialties.routes";
 import { userRoutes } from "../modules/User/user.routes";
 
 const router = express.Router();
-
+// here we manage module route. each module has a route file for module's
 const moduleRoutes = [
   {
     path: "/user",

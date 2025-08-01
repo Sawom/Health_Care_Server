@@ -1,10 +1,14 @@
-1.User module
-By user module we create admin, doctor, patient
+1. User module
+* By user module we create admin, doctor, patient
+* get all data 
+* pagination, searching, sorting, filtering
 
-
-
-
-
+2. User module
+* meta data
+* get data by id  
+* update
+* delete
+* soft delete
 
 
 
