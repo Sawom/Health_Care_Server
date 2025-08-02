@@ -6,6 +6,16 @@ import httpStatus from "http-status";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import router from "./app/routes";
 
+import fs from "fs";
+import path from "path";
+
+// create a uploads folder on root.
+// if folder does not exists then create it when server is start to avoid *ENOENT* error
+const uploadPath = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath);
+} // end
+
 const app: Application = express();
 app.use(cors());
 app.use(cookieParser());
