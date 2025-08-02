@@ -22,7 +22,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
   const file = req.file as IFile;
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-    console.log(uploadToCloudinary);
+    // console.log(uploadToCloudinary); here we console to get CloudinaryResponse type
     req.body.admin.profilePhoto = uploadToCloudinary?.secure_url; //secure_url provides img link and it is Cloudinary's property
   }
   // secure password with bcrypt package
@@ -34,7 +34,9 @@ const createAdmin = async (req: Request): Promise<Admin> => {
     role: UserRole.ADMIN,
   };
 
-  //   here we create user and admin at the same time. so we use  transactionClient
+  //   here we create admin as a user at the same time.
+  // that means admin and user at a same time.
+  // working with two different table at the same time. so we use  transactionClient
   const result = await prisma.$transaction(async (transactionClient) => {
     await transactionClient.user.create({
       data: userData,
@@ -72,7 +74,7 @@ const createDoctor = async (req: Request): Promise<Doctor> => {
     });
 
     const createdDoctorData = await transactionClient.doctor.create({
-      data: req.body.doctor,
+      data: req.body.doctor, // ** doctor ** table name
     });
 
     return createdDoctorData;

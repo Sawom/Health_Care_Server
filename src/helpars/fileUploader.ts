@@ -4,6 +4,7 @@ import multer from "multer";
 import path from "path";
 import { ICloudinaryResponse, IFile } from "../app/interfaces/file";
 
+// this config is from Cloudinary
 cloudinary.config({
   cloud_name: "dmuosc3lg",
   api_key: "746329368856669",
