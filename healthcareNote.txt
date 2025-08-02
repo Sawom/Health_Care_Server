@@ -21,8 +21,9 @@
 ** change pass, reset pass
 
 4. 
-* file upload
-
+* file upload with multer and store Cloudinary
+** doctor module: create doctor as user, get all user with filtering, get profile information
+** updateing user status 
 
 
 

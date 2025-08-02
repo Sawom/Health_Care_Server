@@ -157,6 +157,7 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
         : {
             createdAt: "desc",
           },
+    // skip password and get others data with select query
     select: {
       id: true,
       email: true,

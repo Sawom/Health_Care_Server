@@ -15,6 +15,7 @@ router.get(
   userController.getAllFromDB
 );
 
+// get user's personal information
 router.get(
   "/me",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
