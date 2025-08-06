@@ -203,6 +203,7 @@ const changeProfileStatus = async (id: string, status: UserRole) => {
   return updateUserStatus;
 };
 
+// get user's own profile
 const getMyProfile = async (user: IAuthUser) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
@@ -220,6 +221,8 @@ const getMyProfile = async (user: IAuthUser) => {
 
   let profileInfo;
 
+  // if user is a admin get data from admin table, if user is a doctor then get data from doctor table
+  // if user is patient get data from patient table
   if (userInfo.role === UserRole.SUPER_ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
