@@ -1,3 +1,5 @@
+//** for many to may relation we need to create an intermediate table and taking their id to make many to many relation
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -100,6 +102,7 @@ model Specialties {
   @@map("specialties")
 }
 
+// intermediate  table of specialities and doctor table
 model DoctorSpecialties {
   specialitiesId String
   specialities   Specialties @relation(fields: [specialitiesId], references: [id])
