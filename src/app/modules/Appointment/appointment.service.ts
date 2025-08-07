@@ -1,4 +1,9 @@
-import { AppointmentStatus, PaymentStatus, Prisma, UserRole } from "@prisma/client";
+import {
+  AppointmentStatus,
+  PaymentStatus,
+  Prisma,
+  UserRole,
+} from "@prisma/client";
 import httpStatus from "http-status";
 import { v4 as uuidv4 } from "uuid";
 import { paginationHelper } from "../../../helpars/paginationHelper";
@@ -13,6 +18,7 @@ const createAppointment = async (user: IAuthUser, payload: any) => {
       email: user?.email,
     },
   });
+  console.log(patientData);
 
   const doctorData = await prisma.doctor.findUniqueOrThrow({
     where: {
@@ -301,7 +307,7 @@ const cancelUnpaidAppointments = async () => {
     }
   });
 
-  console.log("updated")
+  console.log("updated");
 };
 
 export const AppointmentService = {

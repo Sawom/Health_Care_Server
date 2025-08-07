@@ -13,7 +13,7 @@ const fetchDashboardMetaData = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Meta data retrival successfully!",
+      message: "Meta data get successfully!",
       data: result,
     });
   }

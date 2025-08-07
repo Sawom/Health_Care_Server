@@ -14,6 +14,7 @@ const convertDateTime = async (date: Date) => {
 const insertIntoDB = async (payload: ISchedule): Promise<Schedule[]> => {
   const { startDate, endDate, startTime, endTime } = payload;
 
+  // 30 mins after schedule
   const interverlTime = 30;
 
   const schedules = [];
@@ -21,15 +22,18 @@ const insertIntoDB = async (payload: ISchedule): Promise<Schedule[]> => {
   const currentDate = new Date(startDate); // start date
   const lastDate = new Date(endDate); // end date
 
+  // at first run a loop in date. then time add with date.
+  // then run a loop in time range. then after 30 mins interval create slot and save to database.
+  // then keep that result in an array
   while (currentDate <= lastDate) {
     // 09:30  ---> ['09', '30']
     const startDateTime = new Date(
       addMinutes(
         addHours(
-          `${format(currentDate, "yyyy-MM-dd")}`,
+          `${format(currentDate, "yyyy-MM-dd")}`, // format of date
           Number(startTime.split(":")[0])
         ),
-        Number(startTime.split(":")[1])
+        Number(startTime.split(":")[1]) // 0th index hours and 1st index mins
       )
     );
 
@@ -56,7 +60,8 @@ const insertIntoDB = async (payload: ISchedule): Promise<Schedule[]> => {
         startDateTime: s,
         endDateTime: e,
       };
-
+      // avoid create duplicate data. if exist we do not create data
+      // we do not stop loop because sometimes a chance to create schedule
       const existingSchedule = await prisma.schedule.findFirst({
         where: {
           startDateTime: scheduleData.startDateTime,
