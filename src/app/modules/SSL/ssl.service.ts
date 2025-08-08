@@ -48,7 +48,7 @@ const initPayment = async (paymentData: IPaymentData) => {
 
     return response.data;
   } catch (err) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Payment erro occured!");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Payment error occurred!");
   }
 };
 

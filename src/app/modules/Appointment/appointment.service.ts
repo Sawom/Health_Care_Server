@@ -261,6 +261,7 @@ const changeAppointmentStatus = async (
   return result;
 };
 
+// this function delete appointment which is booked but didnot paid within 30 mins
 const cancelUnpaidAppointments = async () => {
   const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000);
 
