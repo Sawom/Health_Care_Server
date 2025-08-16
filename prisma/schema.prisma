@@ -68,7 +68,7 @@ model Doctor {
   prescription        Prescription[]
   review              Review[]
 
-  @@map("doctors")
+  @@map("doctors") // data table name. by this name we fetched data from frontend
 }
 
 model Patient {
