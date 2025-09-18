@@ -11,6 +11,8 @@ cloudinary.config({
   api_secret: "G5pX3BIpQHJPApRYC85CKxvRiFk",
 });
 
+// create a uploads folder on root.
+// if folder does not exists then create it when server is start to avoid *ENOENT* error
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(process.cwd(), "uploads"));
