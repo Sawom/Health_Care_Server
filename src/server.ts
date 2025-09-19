@@ -1,13 +1,12 @@
 import { Server } from "http";
 import app from "./app";
-
-const port = 5000;
+import config from "./config";
 
 // I implement exitHandler, uncaughtException, unhandledRejection. if try catch is fail to recognize the error then server will be stopped.
 // this way we avoid server crashing
 async function main() {
-  const server: Server = app.listen(port, () => {
-    console.log("health care app is listening on port", port);
+  const server: Server = app.listen(config.port, () => {
+    console.log("Sever is running on port ", config.port);
   });
 
   const exitHandler = () => {

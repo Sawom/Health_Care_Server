@@ -8,8 +8,22 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import { AppointmentService } from "./app/modules/Appointment/appointment.service";
 import router from "./app/routes";
 
+// he error happens because:
+// On frontend, you’re using credentials: "include" → correct.
+// On backend, you used app.use(cors()), which sets Access-Control-Allow-Origin: *. That’s not allowed when sending credentials.
+// ******solution******
+// app.use(cors({
+//   origin: "http://localhost:3000",
+//   credentials: true,
+// }));
+
 const app: Application = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 //parser
