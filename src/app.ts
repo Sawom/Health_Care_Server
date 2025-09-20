@@ -8,7 +8,7 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import { AppointmentService } from "./app/modules/Appointment/appointment.service";
 import router from "./app/routes";
 
-// he error happens because:
+// this error happens because:
 // On frontend, you’re using credentials: "include" → correct.
 // On backend, you used app.use(cors()), which sets Access-Control-Allow-Origin: *. That’s not allowed when sending credentials.
 // ******solution******

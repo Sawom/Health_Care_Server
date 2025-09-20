@@ -25,8 +25,9 @@ const getAllFromDB = async (
     });
   }
 
+  // doctor > doctorSpecialties > specialties -> title
+
   if (specialties && specialties.length > 0) {
-    // Corrected specialties condition
     andConditions.push({
       doctorSpecialties: {
         some: {
@@ -64,11 +65,16 @@ const getAllFromDB = async (
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
-        : { createdAt: "desc" },
+        : { averageRating: "desc" },
     include: {
       doctorSpecialties: {
         include: {
           specialities: true,
+        },
+      },
+      review: {
+        select: {
+          rating: true,
         },
       },
     },
@@ -100,6 +106,7 @@ const getByIdFromDB = async (id: string): Promise<Doctor | null> => {
           specialities: true,
         },
       },
+      review: true,
     },
   });
   return result;
