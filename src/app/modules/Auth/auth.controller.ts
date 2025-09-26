@@ -6,6 +6,7 @@ import { AuthServices } from "./auth.service";
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginUser(req.body);
+
   const { refreshToken } = result;
   // Set refreshToken as an HTTP-only cookie (not accessible via JS)
   // secure: false → cookie works on both HTTP & HTTPS (set true in production)
@@ -27,12 +28,13 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
+
   const result = await AuthServices.refreshToken(refreshToken);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Logged in successfully!",
+    message: "Access token generated successfully!",
     data: result,
     // data: {
     //     accessToken: result.accessToken,
