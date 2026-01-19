@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "seed": "ts-node-dev --respawn --transpile-only prisma/seed.ts",
-    "start": "node index.js",
+    "start": "node dist/server.js",
     "vercel-build": "prisma generate"
   },
   "keywords": [],

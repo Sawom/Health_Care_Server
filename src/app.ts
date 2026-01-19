@@ -11,18 +11,19 @@ import router from "./app/routes";
 // this error happens because:
 // On frontend, you’re using credentials: "include" → correct.
 // On backend, you used app.use(cors()), which sets Access-Control-Allow-Origin: *. That’s not allowed when sending credentials.
+
 // ******solution******
 // app.use(cors({
-//   origin: "http://localhost:3000",
+//   origin: "http://localhost:3000", when working in local server
 //   credentials: true,
 // }));
 
 const app: Application = express();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL as string,
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 
