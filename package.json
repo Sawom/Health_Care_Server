@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "seed": "ts-node-dev --respawn --transpile-only prisma/seed.ts",
     "start": "node dist/server.js",
-    "vercel-build": "prisma generate"
+    "vercel-build": "prisma generate && tsc"
   },
   "keywords": [],
   "author": "",
