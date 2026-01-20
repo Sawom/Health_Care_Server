@@ -10,7 +10,7 @@
     "vercel-build": "prisma generate && prisma migrate deploy && prisma db seed && tsc"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/seed.ts"
   },
   "keywords": [],
   "author": "",
