@@ -112,6 +112,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*"], // শুধু src এর ফাইলগুলো কম্পাইল করবে
-  "exclude": ["node_modules", "prisma/seed.ts", "dist"]
+  "include": ["src/**/*", "prisma/**/*.ts"],
+  "exclude": ["node_modules"]
 }
