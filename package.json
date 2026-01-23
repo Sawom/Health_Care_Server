@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc -p tsconfig.json",
     "start": "node dist/server.js",
-    "vercel-build": "prisma generate && prisma migrate deploy"
+    "vercel-build": "prisma generate && tsc -p ."
   },
   "keywords": [],
   "author": "",
