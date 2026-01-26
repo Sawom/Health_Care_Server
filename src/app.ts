@@ -19,12 +19,22 @@ import router from "./app/routes";
 // }));
 
 const app: Application = express();
+
+const whiteList = ["http://localhost:3000", process.env.FRONTEND_URL as string];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL as string,
+    origin: function (origin, callback) {
+      if (!origin || whiteList.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
+
 app.use(cookieParser());
 
 //parser
