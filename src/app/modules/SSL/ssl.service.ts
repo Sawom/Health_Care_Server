@@ -15,7 +15,7 @@ const initPayment = async (paymentData: IPaymentData) => {
       success_url: config.ssl.successUrl,
       fail_url: config.ssl.failUrl,
       cancel_url: config.ssl.cancelUrl,
-      ipn_url: "http://localhost:3030/ipn",
+      ipn_url: "https://healthcare-client-theta.vercel.app/ipn",
       shipping_method: "N/A",
       product_name: "Appointment",
       product_category: "Service",
