@@ -32,7 +32,6 @@ The platform is built with a modern tech stack for high performance and scalabil
 * **Medical Record Management:** Maintain a personal medical history and upload diagnostic test reports.
 * **Payment & Confirmation:** Secure fee payment during booking. This features is impliment fr 
     > **Note:** Appointments are confirmed only after payment. If payment is not made within 30 minutes, the booking is automatically canceled.
-* **Reviews:** Provide ratings and comments for doctors and manage previous reviews.
 
 ---
 
@@ -40,7 +39,7 @@ The platform is built with a modern tech stack for high performance and scalabil
 * **Real-time Communication:** Seamless video consultations through WebRTC.
 * **Security:** Robust user authentication and role-based authorization.
 * **Seamless Payments:** Integrated payment gateway for secure consultation fee transactions.
-* **Payment:** SSL ssl commerz for payment gateway system.
+* **Payment:** SSL commerz for payment gateway system.
 
 ---
 
