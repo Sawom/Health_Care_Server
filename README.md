@@ -134,3 +134,4 @@ Health_Care_Server
 └─ vercel.json
 
 ```
+run server:  npx ts-node-dev --respawn --transpile-only src/server.ts
