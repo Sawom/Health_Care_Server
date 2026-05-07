@@ -77,7 +77,7 @@ const getMyProfile = catchAsync(
       message: "My profile data fetched!",
       data: result,
     });
-  }
+  },
 );
 
 const updateMyProfie = catchAsync(
@@ -92,7 +92,7 @@ const updateMyProfie = catchAsync(
       message: "My profile updated!",
       data: result,
     });
-  }
+  },
 );
 
 export const userController = {

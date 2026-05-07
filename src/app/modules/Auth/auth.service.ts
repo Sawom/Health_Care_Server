@@ -25,7 +25,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
   // password is compared with bcrypt password and user password
   const isCorrectPassword: boolean = await bcrypt.compare(
     payload.password,
-    userData.password
+    userData.password,
   );
 
   // console.log(isCorrectPassword);
@@ -44,7 +44,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       role: userData.role,
     },
     config.jwt.jwt_secret as Secret, // secret key
-    config.jwt.expires_in as string // validity 5 mins
+    config.jwt.expires_in as string, // validity 5 mins
   );
 
   //   refresh token generate
@@ -54,13 +54,13 @@ const loginUser = async (payload: { email: string; password: string }) => {
       role: userData.role,
     },
     config.jwt.refresh_token_secret as Secret,
-    config.jwt.refresh_token_expires_in as string
+    config.jwt.refresh_token_expires_in as string,
   );
 
   return {
     accessToken,
     refreshToken,
-    needPasswordChange: userData.needPasswordChange,
+    needPasswordChange: userData?.needPasswordChange,
   };
 };
 
@@ -69,7 +69,7 @@ const refreshToken = async (token: string) => {
   try {
     decodedData = jwtHelpers.verifyToken(
       token,
-      config.jwt.refresh_token_secret as Secret
+      config.jwt.refresh_token_secret as Secret,
     ); // setup in .env file.  'abcdefghgijklmnop' this is a secret key. secret key can be anything
   } catch (err) {
     throw new Error("You are not authorized!");
@@ -88,7 +88,7 @@ const refreshToken = async (token: string) => {
       role: userData.role,
     },
     config.jwt.jwt_secret as Secret,
-    config.jwt.expires_in as string
+    config.jwt.expires_in as string,
   );
 
   return {
@@ -107,7 +107,7 @@ const changePassword = async (user: any, payload: any) => {
 
   const isCorrectPassword: boolean = await bcrypt.compare(
     payload.oldPassword,
-    userData.password
+    userData.password,
   );
 
   if (!isCorrectPassword) {
@@ -142,7 +142,7 @@ const forgotPassword = async (payload: { email: string }) => {
   const resetPassToken = jwtHelpers.generateToken(
     { email: userData.email, role: userData.role },
     config.jwt.reset_pass_secret as Secret,
-    config.jwt.reset_pass_token_expires_in as string
+    config.jwt.reset_pass_token_expires_in as string,
   );
   console.log(resetPassToken);
 
@@ -163,14 +163,14 @@ const forgotPassword = async (payload: { email: string }) => {
             </p>
 
         </div>
-        `
+        `,
   );
   //console.log(resetPassLink)
 };
 
 const resetPassword = async (
   token: string,
-  payload: { id: string; password: string }
+  payload: { id: string; password: string },
 ) => {
   // console.log({ token, payload });
   const userData = await prisma.user.findUniqueOrThrow({
@@ -182,7 +182,7 @@ const resetPassword = async (
 
   const isValidToken = jwtHelpers.verifyToken(
     token,
-    config.jwt.reset_pass_secret as Secret
+    config.jwt.reset_pass_secret as Secret,
   );
 
   if (!isValidToken) {

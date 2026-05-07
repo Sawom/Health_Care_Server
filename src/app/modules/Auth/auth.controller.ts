@@ -21,7 +21,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     message: "Logged in successfully!",
     data: {
       accessToken: result.accessToken,
-      needPasswordChange: result.needPasswordChange,
+      needPasswordChange: result?.needPasswordChange,
     },
   });
 });
@@ -55,7 +55,7 @@ const changePassword = catchAsync(
       message: "Password Changed successfully",
       data: result,
     });
-  }
+  },
 );
 
 const forgotPassword = catchAsync(async (req: Request, res: Response) => {
