@@ -25,15 +25,32 @@ router.get(
 router.post(
   "/create-admin",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
-  fileUploader.upload.single("file"), // here we upload img
+  fileUploader.upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body.data) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Data field is missing in FormData" });
+    // ১. ডিবাগিং এর জন্য লগ (এটি টার্মিনালে চেক করবে)
+    console.log("Incoming Body:", req.body);
+
+    // ২. "undefined" স্ট্রিং বা খালি ডাটা চেক
+    if (!req.body.data || req.body.data === "undefined") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Backend received 'undefined' or no data at all. Check your frontend payload.",
+      });
     }
-    req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
-    return userController.createAdmin(req, res, next);
+
+    try {
+      // ৩. ডাটা পার্স করা
+      const parsedData = JSON.parse(req.body.data);
+      req.body = userValidation.createAdmin.parse(parsedData);
+
+      return userController.createAdmin(req, res, next);
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid JSON format in 'data' field",
+      });
+    }
   },
 );
 
