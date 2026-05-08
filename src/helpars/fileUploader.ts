@@ -13,32 +13,42 @@ cloudinary.config({
 
 // create a uploads folder on root.
 // if folder does not exists then create it when server is start to avoid *ENOENT* error
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(process.cwd(), "uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+// diskStorage এর বদলে memoryStorage ব্যবহার করা হয়েছে।
+// এটি ফাইলকে হার্ডড্রাইভে সেভ না করে RAM (Buffer) এ রাখবে।
+// ফলে 'uploads' ফোল্ডার না থাকলেও কোনো সমস্যা নেই।
+
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
 const uploadToCloudinary = async (
-  file: IFile
-): Promise<ICloudinaryResponse | undefined> => {
+  file: any, // এখানে IFile এর বদলে any বা Express.Multer.File দিতে পারো
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(
-      file.path,
-      (error: Error, result: ICloudinaryResponse) => {
-        fs.unlinkSync(file.path);
+    /**
+     * CHANGE 2:
+     * cloudinary.uploader.upload এর বদলে upload_stream ব্যবহার করা হয়েছে।
+     * যেহেতু ফাইল এখন 'path'-এ নেই বরং মেমোরি 'buffer'-এ আছে,
+     * তাই স্ট্রিম ব্যবহার করে সরাসরি ক্লাউডিনারিতে পাঠাতে হবে।
+     */
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "hospital-system", // তুমি চাইলে ফোল্ডার নাম দিতে পারো
+      },
+      (error, result) => {
         if (error) {
-          reject(error);
-        } else {
-          resolve(result);
+          return reject(error);
         }
-      }
+        resolve(result);
+      },
     );
+
+    /**
+     * CHANGE 3:
+     * মেমোরিতে থাকা ফাইলের বাফারটিকে (file.buffer) স্ট্রিমে পাঠিয়ে দেওয়া হয়েছে।
+     * এখানে আর fs.unlinkSync করার প্রয়োজন নেই কারণ ডিস্কে কোনো ফাইল তৈরিই হয়নি।
+     */
+    uploadStream.end(file.buffer);
   });
 };
 

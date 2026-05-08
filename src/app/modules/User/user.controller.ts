@@ -7,7 +7,7 @@ import { IAuthUser } from "../../interfaces/common";
 import { userFilterableFields } from "./user.constant";
 import { userService } from "./user.service";
 
-const createAdmin = async (req: Request, res: Response) => {
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const result = await userService.createAdmin(req);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -15,7 +15,7 @@ const createAdmin = async (req: Request, res: Response) => {
     message: "Admin Created successfully!",
     data: result,
   });
-};
+});
 
 const createDoctor = catchAsync(async (req: Request, res: Response) => {
   const result = await userService.createDoctor(req);

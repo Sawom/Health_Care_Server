@@ -20,30 +20,54 @@ import { userSearchAbleFields } from "./user.constant";
 // createAdmin createDoctor, createPatient, with profile img upload with Cloudinary
 const createAdmin = async (req: Request): Promise<Admin> => {
   const file = req.file as IFile;
-  if (file) {
-    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-    // console.log(uploadToCloudinary); here we console to get CloudinaryResponse type
-    req.body.admin.profilePhoto = uploadToCloudinary?.secure_url; //secure_url provides img link and it is Cloudinary's property
+
+  /**
+   * CHANGE 1: ডাটা হ্যান্ডলিং
+   * রাউটারে 'req.body.data' পার্স করার পর req.body এর স্ট্রাকচার এখন:
+   * { password: '...', admin: { name: '...', email: '...' } }
+   */
+  let adminData = req.body.admin;
+
+  // যদি কোনো কারণে adminData স্ট্রিং হিসেবে আসে (FormData behavior), তবে সেটি পার্স করা
+  if (typeof adminData === "string") {
+    adminData = JSON.parse(adminData);
   }
-  // secure password with bcrypt package
+
+  if (file) {
+    /**
+     * CHANGE 2: ক্লাউডিনারি আপলোড
+     * এটি এখন আমাদের নতুন memoryStorage লজিক ব্যবহার করবে (file.buffer)।
+     * Vercel-এ আর ENOENT এরর আসবে না।
+     */
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+
+    // প্রোফাইল ফটোর লিঙ্কটি সরাসরি admin অবজেক্টে সেট করা
+    adminData.profilePhoto = uploadToCloudinary?.secure_url;
+  }
+
+  // পাসওয়ার্ড হ্যাশ করা (সরাসরি req.body থেকে)
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
-  // console.log(hashedPassword);
+
   const userData = {
-    email: req.body.admin.email,
+    email: adminData.email,
     password: hashedPassword,
     role: UserRole.ADMIN,
   };
 
-  //   here we create admin as a user at the same time.
-  // that means admin and user at a same time.
-  // working with two different table at the same time. so we use  transactionClient
+  /**
+   * CHANGE 3: ডাটাবেজ ট্রানজেকশন
+   * ট্রানজেকশন ব্যবহার করা হয়েছে যাতে ইউজার এবং অ্যাডমিন—উভয় টেবিলে ডাটা
+   * একই সাথে সেভ হয় অথবা কোনো এরর হলে কিছুই সেভ না হয়।
+   */
   const result = await prisma.$transaction(async (transactionClient) => {
+    // ইউজার ক্রিয়েট করা
     await transactionClient.user.create({
       data: userData,
     });
 
+    // অ্যাডমিন ক্রিয়েট করা (এখানে adminData এর ভেতর এখন profilePhoto আছে)
     const createdAdminData = await transactionClient.admin.create({
-      data: req.body.admin,
+      data: adminData,
     });
 
     return createdAdminData;
@@ -252,6 +276,7 @@ const getMyProfile = async (user: IAuthUser) => {
   return { ...userInfo, ...profileInfo };
 };
 
+// update user's profile
 const updateMyProfie = async (user: IAuthUser, req: Request) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {

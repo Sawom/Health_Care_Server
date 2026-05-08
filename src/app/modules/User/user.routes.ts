@@ -12,14 +12,14 @@ const router = express.Router();
 router.get(
   "/",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
-  userController.getAllFromDB
+  userController.getAllFromDB,
 );
 
 // get user's personal information
 router.get(
   "/me",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
-  userController.getMyProfile
+  userController.getMyProfile,
 );
 
 router.post(
@@ -27,10 +27,12 @@ router.post(
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   fileUploader.upload.single("file"), // here we upload img
   (req: Request, res: Response, next: NextFunction) => {
-    req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data)); // we did it because at first response was in string format.
+    if (req.body.data) {
+      req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
+    }
     // so we convert it to json data
     return userController.createAdmin(req, res, next);
-  }
+  },
 );
 
 router.post(
@@ -40,7 +42,7 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => {
     req.body = userValidation.createDoctor.parse(JSON.parse(req.body.data));
     return userController.createDoctor(req, res, next);
-  }
+  },
 );
 
 router.post(
@@ -49,14 +51,14 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => {
     req.body = userValidation.createPatient.parse(JSON.parse(req.body.data));
     return userController.createPatient(req, res, next);
-  }
+  },
 );
 
 router.patch(
   "/:id/status",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(userValidation.updateStatus),
-  userController.changeProfileStatus
+  userController.changeProfileStatus,
 );
 
 router.patch(
@@ -66,7 +68,7 @@ router.patch(
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
     return userController.updateMyProfie(req, res, next);
-  }
+  },
 );
 
 export const userRoutes = router;
