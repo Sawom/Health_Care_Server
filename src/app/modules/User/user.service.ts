@@ -23,23 +23,12 @@ const createAdmin = async (req: Request): Promise<Admin> => {
 
   // ১. রাউটারে অলরেডি পার্স করা হয়েছে, তাই সরাসরি req.body থেকে ডাটা নাও
   // যদি req.body.admin না থাকে তবে ফাঁকা অবজেক্ট নাও যাতে ক্র্যাশ না করে
-  let adminData = req.body.admin || {};
+  let adminData = req.body.admin;
   const password = req.body.password;
 
   // ২. সেফটি চেক: যদি adminData এখনো স্ট্রিং থাকে (খুবই রেয়ার যদি রাউটারে পার্স করা থাকে)
-  if (typeof adminData === "string") {
-    try {
-      adminData = JSON.parse(adminData);
-    } catch (error) {
-      throw new Error("Admin data is not a valid JSON string");
-    }
-  }
-
   if (file) {
-    // ৩. মেমোরি স্টোরেজ ব্যবহার করে ক্লাউডিনারি আপলোড
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-
-    // লিঙ্কটি অবজেক্টে ঢুকিয়ে দাও
     adminData.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
