@@ -27,10 +27,12 @@ router.post(
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   fileUploader.upload.single("file"), // here we upload img
   (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.data) {
-      req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
+    if (!req.body.data) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Data field is missing in FormData" });
     }
-    // so we convert it to json data
+    req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
     return userController.createAdmin(req, res, next);
   },
 );

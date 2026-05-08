@@ -21,32 +21,33 @@ import { userSearchAbleFields } from "./user.constant";
 const createAdmin = async (req: Request): Promise<Admin> => {
   const file = req.file as IFile;
 
-  /**
-   * CHANGE 1: ডাটা হ্যান্ডলিং
-   * রাউটারে 'req.body.data' পার্স করার পর req.body এর স্ট্রাকচার এখন:
-   * { password: '...', admin: { name: '...', email: '...' } }
-   */
-  let adminData = req.body.admin;
+  // ১. রাউটারে অলরেডি পার্স করা হয়েছে, তাই সরাসরি req.body থেকে ডাটা নাও
+  // যদি req.body.admin না থাকে তবে ফাঁকা অবজেক্ট নাও যাতে ক্র্যাশ না করে
+  let adminData = req.body.admin || {};
+  const password = req.body.password;
 
-  // যদি কোনো কারণে adminData স্ট্রিং হিসেবে আসে (FormData behavior), তবে সেটি পার্স করা
+  // ২. সেফটি চেক: যদি adminData এখনো স্ট্রিং থাকে (খুবই রেয়ার যদি রাউটারে পার্স করা থাকে)
   if (typeof adminData === "string") {
-    adminData = JSON.parse(adminData);
+    try {
+      adminData = JSON.parse(adminData);
+    } catch (error) {
+      throw new Error("Admin data is not a valid JSON string");
+    }
   }
 
   if (file) {
-    /**
-     * CHANGE 2: ক্লাউডিনারি আপলোড
-     * এটি এখন আমাদের নতুন memoryStorage লজিক ব্যবহার করবে (file.buffer)।
-     * Vercel-এ আর ENOENT এরর আসবে না।
-     */
+    // ৩. মেমোরি স্টোরেজ ব্যবহার করে ক্লাউডিনারি আপলোড
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
 
-    // প্রোফাইল ফটোর লিঙ্কটি সরাসরি admin অবজেক্টে সেট করা
+    // লিঙ্কটি অবজেক্টে ঢুকিয়ে দাও
     adminData.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
-  // পাসওয়ার্ড হ্যাশ করা (সরাসরি req.body থেকে)
-  const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
+  // ৪. পাসওয়ার্ড চেক (যদি পাসওয়ার্ড না আসে তবে হ্যাশ করার আগেই এরর দাও)
+  if (!password) {
+    throw new Error("Password is required to create admin");
+  }
+  const hashedPassword: string = await bcrypt.hash(password, 12);
 
   const userData = {
     email: adminData.email,
@@ -54,18 +55,12 @@ const createAdmin = async (req: Request): Promise<Admin> => {
     role: UserRole.ADMIN,
   };
 
-  /**
-   * CHANGE 3: ডাটাবেজ ট্রানজেকশন
-   * ট্রানজেকশন ব্যবহার করা হয়েছে যাতে ইউজার এবং অ্যাডমিন—উভয় টেবিলে ডাটা
-   * একই সাথে সেভ হয় অথবা কোনো এরর হলে কিছুই সেভ না হয়।
-   */
+  // ৫. ডাটাবেজ ট্রানজেকশন
   const result = await prisma.$transaction(async (transactionClient) => {
-    // ইউজার ক্রিয়েট করা
     await transactionClient.user.create({
       data: userData,
     });
 
-    // অ্যাডমিন ক্রিয়েট করা (এখানে adminData এর ভেতর এখন profilePhoto আছে)
     const createdAdminData = await transactionClient.admin.create({
       data: adminData,
     });
